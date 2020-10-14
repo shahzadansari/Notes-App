@@ -19,7 +19,7 @@ public class NoteRepository {
         mAllNotes = mNoteDao.getAllNotes();
     }
 
-    LiveData<List<Note>> getAllWords() {
+    LiveData<List<Note>> getAllNotes() {
         return mAllNotes;
     }
 
