@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class NoteListAdapter extends ListAdapter<Note, NoteListAdapter.NoteViewHolder> {
 
 
-    protected NoteListAdapter(@NonNull DiffUtil.ItemCallback<Note> diffCallback) {
+    protected NoteListAdapter() {
         super(DIFF_CALLBACK);
     }
 
