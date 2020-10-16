@@ -213,4 +213,20 @@ public class NoteActivity extends AppCompatActivity implements
         mLinedEditText.setCursorVisible(false);
         mLinedEditText.clearFocus();
     }
+
+    private void saveChanges() {
+        if (mIsNewNote) {
+            saveNewNote();
+        } else {
+            updateNote();
+        }
+    }
+
+    public void saveNewNote() {
+        mNoteViewModel.insert(mNoteFinal);
+    }
+
+    public void updateNote() {
+        mNoteViewModel.updateNote(mNoteFinal);
+    }
 }
