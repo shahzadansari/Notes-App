@@ -7,30 +7,34 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.notes_app.models.Note;
-import com.example.notes_app.persistence.NoteRepository;
+import com.example.notes_app.persistence.NoteViewModel;
 
 public class NoteActivity extends AppCompatActivity {
     private Button button;
     private EditText editTextField1;
     private EditText editTextField2;
 
-    private NoteRepository mNoteRepository;
+    private NoteViewModel mNoteViewModel;
+
+    private int id = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
-
-        mNoteRepository = new NoteRepository(getApplication());
+        mNoteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
 
         editTextField1 = findViewById(R.id.edit_text_note_title);
         editTextField2 = findViewById(R.id.edit_text_note_body);
         button = findViewById(R.id.button_save);
 
-        if(getIntent() != null){
+
+        if (getIntent().getExtras() != null) {
             Note note = getIntent().getParcelableExtra("selected_note");
+            id = note.getId();
             editTextField1.setText(note.getTitle());
             editTextField2.setText(note.getBody());
         }
@@ -40,10 +44,18 @@ public class NoteActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String title = editTextField1.getText().toString().trim();
                 String body = editTextField2.getText().toString().trim();
-                Note note = new Note(title, body);
 
-                mNoteRepository.insert(note);
-                Toast.makeText(NoteActivity.this, "Note inserted", Toast.LENGTH_SHORT).show();
+                if (id != -1) {
+                    Note note = new Note(title, body);
+                    note.setId(id);
+                    mNoteViewModel.updateNote(note);
+                    Toast.makeText(NoteActivity.this, "Note updated", Toast.LENGTH_SHORT).show();
+                } else {
+                    Note note = new Note(title, body);
+                    mNoteViewModel.insert(note);
+                    Toast.makeText(NoteActivity.this, "New Note inserted", Toast.LENGTH_SHORT).show();
+                }
+
                 finish();
             }
         });
