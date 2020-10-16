@@ -79,7 +79,7 @@ public class NoteActivity extends AppCompatActivity implements
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+        mViewTitle.setText(s.toString());
     }
 
     @Override
@@ -94,6 +94,7 @@ public class NoteActivity extends AppCompatActivity implements
 
     @Override
     public boolean onDoubleTap(MotionEvent e) {
+        enableEditMode();
         return false;
     }
 
@@ -153,8 +154,18 @@ public class NoteActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onBackPressed() {
+        if(mMode == EDIT_MODE_ENABLED){
+            onClick(mCheck);
+        }
+        else{
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public boolean onTouch(View v, MotionEvent event) {
-        return false;
+        return mGestureDetector.onTouchEvent(event);
     }
 
     private void setNewNoteProperties() {
