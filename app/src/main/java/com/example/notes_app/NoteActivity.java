@@ -29,6 +29,12 @@ public class NoteActivity extends AppCompatActivity {
         editTextField2 = findViewById(R.id.edit_text_note_body);
         button = findViewById(R.id.button_save);
 
+        if(getIntent() != null){
+            Note note = getIntent().getParcelableExtra("selected_note");
+            editTextField1.setText(note.getTitle());
+            editTextField2.setText(note.getBody());
+        }
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

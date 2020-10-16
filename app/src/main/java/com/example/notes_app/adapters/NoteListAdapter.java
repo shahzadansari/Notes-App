@@ -15,6 +15,7 @@ import com.example.notes_app.models.Note;
 
 public class NoteListAdapter extends ListAdapter<Note, NoteListAdapter.NoteViewHolder> {
 
+    private OnItemClickListener listener;
 
     public NoteListAdapter() {
         super(DIFF_CALLBACK);
@@ -31,6 +32,10 @@ public class NoteListAdapter extends ListAdapter<Note, NoteListAdapter.NoteViewH
             return (oldItem.getTitle().equals(newItem.getTitle()) && oldItem.getBody().equals(newItem.getBody()));
         }
     };
+
+    public Note getNoteAt(int position) {
+        return getItem(position);
+    }
 
     @NonNull
     @Override
@@ -62,6 +67,24 @@ public class NoteListAdapter extends ListAdapter<Note, NoteListAdapter.NoteViewH
             super(itemView);
             titleTextView = itemView.findViewById(R.id.text_view_note_title);
             bodyTextView = itemView.findViewById(R.id.text_view_note_body);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(getItem(position));
+                    }
+                }
+            });
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Note note);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 }

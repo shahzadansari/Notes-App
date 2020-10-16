@@ -48,5 +48,14 @@ public class MainActivity extends AppCompatActivity {
                 adapter.submitList(notes);
             }
         });
+
+        adapter.setOnItemClickListener(new NoteListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Note note) {
+                Intent intent = new Intent(MainActivity.this, NoteActivity.class);
+                intent.putExtra("selected_note", note);
+                startActivity(intent);
+            }
+        });
     }
 }
