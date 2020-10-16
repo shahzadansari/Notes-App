@@ -2,7 +2,10 @@ package com.example.notes_app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -93,5 +96,28 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.clear_data) {
+
+            // Delete the existing data
+            mNoteViewModel.deleteAllNotes();
+            Toast.makeText(this, "All notes deleted", Toast.LENGTH_SHORT).show();
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
