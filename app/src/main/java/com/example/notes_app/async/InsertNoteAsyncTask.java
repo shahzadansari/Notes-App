@@ -5,11 +5,11 @@ import android.os.AsyncTask;
 import com.example.notes_app.models.Note;
 import com.example.notes_app.persistence.NoteDao;
 
-public class InsertAsyncTask extends AsyncTask<Note, Void, Void> {
+public class InsertNoteAsyncTask extends AsyncTask<Note, Void, Void> {
 
     private NoteDao mAsyncTaskDao;
 
-    public InsertAsyncTask(NoteDao dao) {
+    public InsertNoteAsyncTask(NoteDao dao) {
         mAsyncTaskDao = dao;
     }
 

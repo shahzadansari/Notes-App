@@ -5,17 +5,17 @@ import android.os.AsyncTask;
 import com.example.notes_app.models.Note;
 import com.example.notes_app.persistence.NoteDao;
 
-public class UpdateAsyncTask extends AsyncTask<Note, Void, Void> {
+public class DeleteNoteAsyncTask extends AsyncTask<Note, Void, Void> {
 
     private NoteDao myAsyncTaskDao;
 
-    public UpdateAsyncTask(NoteDao noteDao) {
+    public DeleteNoteAsyncTask(NoteDao noteDao) {
         myAsyncTaskDao = noteDao;
     }
 
     @Override
     protected Void doInBackground(final Note... notes) {
-        myAsyncTaskDao.updateNote(notes[0]);
+        myAsyncTaskDao.deleteNote(notes[0]);
         return null;
     }
 }
