@@ -3,6 +3,7 @@ package com.example.notes_app;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -174,5 +175,42 @@ public class NoteActivity extends AppCompatActivity implements
         mLinedEditText.setFocusableInTouchMode(true);
         mLinedEditText.setCursorVisible(true);
         mLinedEditText.requestFocus();
+    }
+
+    private void disableEditMode() {
+        Log.d(TAG, "disableEditMode: called.");
+        mBackArrowContainer.setVisibility(View.VISIBLE);
+        mCheckContainer.setVisibility(View.GONE);
+
+        mViewTitle.setVisibility(View.VISIBLE);
+        mEditTitle.setVisibility(View.GONE);
+
+        mMode = EDIT_MODE_DISABLED;
+
+        disableContentInteraction();
+
+        // Check if they typed anything into the note. Don't want to save an empty note.
+        String temp = mLinedEditText.getText().toString();
+        temp = temp.replace("\n", "");
+        temp = temp.replace(" ", "");
+        if (temp.length() > 0) {
+            mNoteFinal.setTitle(mEditTitle.getText().toString());
+            mNoteFinal.setBody(mLinedEditText.getText().toString());
+
+            // If the note was altered, save it.
+            if (!mNoteFinal.getBody().equals(mNoteInitial.getBody())
+                    || !mNoteFinal.getTitle().equals(mNoteInitial.getTitle())) {
+                Log.d(TAG, "disableEditMode: called?");
+                saveChanges();
+            }
+        }
+    }
+
+    private void disableContentInteraction() {
+        mLinedEditText.setKeyListener(null);
+        mLinedEditText.setFocusable(false);
+        mLinedEditText.setFocusableInTouchMode(false);
+        mLinedEditText.setCursorVisible(false);
+        mLinedEditText.clearFocus();
     }
 }
