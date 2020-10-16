@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.notes_app.async.DeleteAllNotesAsyncTask;
 import com.example.notes_app.async.DeleteNoteAsyncTask;
 import com.example.notes_app.async.InsertNoteAsyncTask;
 import com.example.notes_app.async.UpdateNoteAsyncTask;
@@ -37,5 +38,9 @@ public class NoteRepository {
 
     public void delete(Note note) {
         new DeleteNoteAsyncTask(mNoteDao).execute(note);
+    }
+
+    void deleteAllNotes() {
+        new DeleteAllNotesAsyncTask(mNoteDao).execute();
     }
 }

@@ -295,7 +295,7 @@ public class NoteActivity extends AppCompatActivity implements
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         mMode = savedInstanceState.getInt("mode");
-        if(mMode == EDIT_MODE_ENABLED){
+        if (mMode == EDIT_MODE_ENABLED) {
             enableEditMode();
         }
     }
