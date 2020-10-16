@@ -134,7 +134,22 @@ public class NoteActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()) {
+            case R.id.toolbar_back_arrow: {
+                finish();
+                break;
+            }
+            case R.id.toolbar_check: {
+                disableEditMode();
+                break;
+            }
+            case R.id.note_text_title: {
+                enableEditMode();
+                mEditTitle.requestFocus();
+                mEditTitle.setSelection(mEditTitle.length());
+                break;
+            }
+        }
     }
 
     @Override
