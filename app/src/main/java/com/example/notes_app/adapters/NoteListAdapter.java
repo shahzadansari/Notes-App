@@ -15,12 +15,6 @@ import com.example.notes_app.models.Note;
 
 public class NoteListAdapter extends ListAdapter<Note, NoteListAdapter.NoteViewHolder> {
 
-    private OnItemClickListener listener;
-
-    public NoteListAdapter() {
-        super(DIFF_CALLBACK);
-    }
-
     private static final DiffUtil.ItemCallback<Note> DIFF_CALLBACK = new DiffUtil.ItemCallback<Note>() {
         @Override
         public boolean areItemsTheSame(Note oldItem, Note newItem) {
@@ -32,6 +26,11 @@ public class NoteListAdapter extends ListAdapter<Note, NoteListAdapter.NoteViewH
             return (oldItem.getTitle().equals(newItem.getTitle()) && oldItem.getBody().equals(newItem.getBody()));
         }
     };
+    private OnItemClickListener listener;
+
+    public NoteListAdapter() {
+        super(DIFF_CALLBACK);
+    }
 
     public Note getNoteAt(int position) {
         return getItem(position);
@@ -58,10 +57,18 @@ public class NoteListAdapter extends ListAdapter<Note, NoteListAdapter.NoteViewH
         }
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Note note);
+    }
+
     class NoteViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView titleTextView;
-        private TextView bodyTextView;
+        private final TextView titleTextView;
+        private final TextView bodyTextView;
 
         private NoteViewHolder(View itemView) {
             super(itemView);
@@ -78,13 +85,5 @@ public class NoteListAdapter extends ListAdapter<Note, NoteListAdapter.NoteViewH
                 }
             });
         }
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(Note note);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
     }
 }

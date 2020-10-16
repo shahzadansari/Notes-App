@@ -7,6 +7,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,8 +20,11 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private NoteViewModel mNoteViewModel;
     private FloatingActionButton fab;
+    private RecyclerView recyclerView;
+    private NoteListAdapter adapter;
+
+    private NoteViewModel mNoteViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +40,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        final NoteListAdapter adapter = new NoteListAdapter();
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        initRecyclerView();
+        initAdapterGestures();
 
         mNoteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
         mNoteViewModel.getAllNotes().observe(this, new Observer<List<Note>>() {
@@ -48,6 +50,40 @@ public class MainActivity extends AppCompatActivity {
                 adapter.submitList(notes);
             }
         });
+
+    }
+
+    private void initRecyclerView() {
+        recyclerView = findViewById(R.id.recycler_view);
+        adapter = new NoteListAdapter();
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void initAdapterGestures() {
+        ItemTouchHelper helper = new ItemTouchHelper(
+                new ItemTouchHelper.SimpleCallback(0,
+                        ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                    @Override
+                    public boolean onMove(RecyclerView recyclerView,
+                                          RecyclerView.ViewHolder viewHolder,
+                                          RecyclerView.ViewHolder target) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSwiped(RecyclerView.ViewHolder viewHolder,
+                                         int direction) {
+                        int position = viewHolder.getAdapterPosition();
+                        Note currentNote = adapter.getNoteAt(position);
+
+                        // Delete the word
+                        mNoteViewModel.deleteNote(currentNote);
+                    }
+                });
+
+        helper.attachToRecyclerView(recyclerView);
+
 
         adapter.setOnItemClickListener(new NoteListAdapter.OnItemClickListener() {
             @Override
