@@ -1,10 +1,12 @@
-package com.example.notes_app;
+package com.example.notes_app.persistence;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+
+import com.example.notes_app.models.Note;
 
 import java.util.List;
 

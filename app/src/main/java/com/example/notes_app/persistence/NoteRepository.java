@@ -1,9 +1,11 @@
-package com.example.notes_app;
+package com.example.notes_app.persistence;
 
 import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
+
+import com.example.notes_app.models.Note;
 
 import java.util.List;
 

@@ -8,6 +8,10 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.notes_app.adapters.NoteListAdapter;
+import com.example.notes_app.models.Note;
+import com.example.notes_app.persistence.NoteViewModel;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mNoteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
-        mNoteViewModel.getAllWords().observe(this, new Observer<List<Note>>() {
+        mNoteViewModel.getAllNotes().observe(this, new Observer<List<Note>>() {
             @Override
             public void onChanged(List<Note> notes) {
                 adapter.submitList(notes);

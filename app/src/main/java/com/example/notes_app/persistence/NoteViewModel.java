@@ -1,10 +1,12 @@
-package com.example.notes_app;
+package com.example.notes_app.persistence;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
+import com.example.notes_app.models.Note;
 
 import java.util.List;
 
@@ -19,7 +21,7 @@ public class NoteViewModel extends AndroidViewModel {
         mAllNotes = mRepository.getAllNotes();
     }
 
-    LiveData<List<Note>> getAllWords() {
+    public LiveData<List<Note>> getAllNotes() {
         return mAllNotes;
     }
 

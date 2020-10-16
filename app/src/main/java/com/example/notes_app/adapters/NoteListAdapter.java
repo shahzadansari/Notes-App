@@ -1,4 +1,4 @@
-package com.example.notes_app;
+package com.example.notes_app.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +10,13 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.notes_app.R;
+import com.example.notes_app.models.Note;
+
 public class NoteListAdapter extends ListAdapter<Note, NoteListAdapter.NoteViewHolder> {
 
 
-    protected NoteListAdapter() {
+    public NoteListAdapter() {
         super(DIFF_CALLBACK);
     }
 
