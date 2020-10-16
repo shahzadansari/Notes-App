@@ -73,7 +73,7 @@ public class NoteActivity extends AppCompatActivity implements
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        
+
     }
 
     @Override
@@ -139,5 +139,20 @@ public class NoteActivity extends AppCompatActivity implements
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         return false;
+    }
+
+    private void setNewNoteProperties(){
+        mViewTitle.setText("Note Title");
+        mEditTitle.setText("Note Title");
+
+        mNoteFinal = new Note();
+        mNoteInitial = new Note();
+        mNoteInitial.setTitle("Note Title");
+    }
+
+    private void setNoteProperties(){
+        mViewTitle.setText(mNoteInitial.getTitle());
+        mEditTitle.setText(mNoteInitial.getTitle());
+        mLinedEditText.setText(mNoteInitial.getBody());
     }
 }
