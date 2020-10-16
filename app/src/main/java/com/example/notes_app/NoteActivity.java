@@ -61,6 +61,17 @@ public class NoteActivity extends AppCompatActivity implements
         mNoteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
 
         setListeners();
+
+        // if it's a new note
+        if (getIncomingIntent()) {
+            setNewNoteProperties();
+            enableEditMode();
+        }
+        // not a new note
+        else {
+            setNoteProperties();
+            disableContentInteraction();
+        }
     }
 
     private void setListeners() {
@@ -71,6 +82,25 @@ public class NoteActivity extends AppCompatActivity implements
         mBackArrow.setOnClickListener(this);
         mEditTitle.addTextChangedListener(this);
     }
+
+    private boolean getIncomingIntent() {
+        if (getIntent().hasExtra("selected_note")) {
+            mNoteInitial = getIntent().getParcelableExtra("selected_note");
+
+            mNoteFinal = new Note();
+            mNoteFinal.setTitle(mNoteInitial.getTitle());
+            mNoteFinal.setBody(mNoteInitial.getBody());
+            mNoteFinal.setId(mNoteInitial.getId());
+
+            mMode = EDIT_MODE_ENABLED;
+            mIsNewNote = false;
+            return false;
+        }
+        mMode = EDIT_MODE_ENABLED;
+        mIsNewNote = true;
+        return true;
+    }
+
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -155,10 +185,9 @@ public class NoteActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        if(mMode == EDIT_MODE_ENABLED){
+        if (mMode == EDIT_MODE_ENABLED) {
             onClick(mCheck);
-        }
-        else{
+        } else {
             super.onBackPressed();
         }
     }
