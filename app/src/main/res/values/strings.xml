@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Notes-App</string>
+    <string name="clear_all_data">Delete all notes</string>
 </resources>
