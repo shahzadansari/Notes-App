@@ -141,7 +141,7 @@ public class NoteActivity extends AppCompatActivity implements
         return false;
     }
 
-    private void setNewNoteProperties(){
+    private void setNewNoteProperties() {
         mViewTitle.setText("Note Title");
         mEditTitle.setText("Note Title");
 
@@ -150,9 +150,29 @@ public class NoteActivity extends AppCompatActivity implements
         mNoteInitial.setTitle("Note Title");
     }
 
-    private void setNoteProperties(){
+    private void setNoteProperties() {
         mViewTitle.setText(mNoteInitial.getTitle());
         mEditTitle.setText(mNoteInitial.getTitle());
         mLinedEditText.setText(mNoteInitial.getBody());
+    }
+
+    private void enableEditMode() {
+        mBackArrowContainer.setVisibility(View.GONE);
+        mCheckContainer.setVisibility(View.VISIBLE);
+
+        mViewTitle.setVisibility(View.GONE);
+        mEditTitle.setVisibility(View.VISIBLE);
+
+        mMode = EDIT_MODE_ENABLED;
+
+        enableContentInteraction();
+    }
+
+    private void enableContentInteraction() {
+        mLinedEditText.setKeyListener(new EditText(this).getKeyListener());
+        mLinedEditText.setFocusable(true);
+        mLinedEditText.setFocusableInTouchMode(true);
+        mLinedEditText.setCursorVisible(true);
+        mLinedEditText.requestFocus();
     }
 }
