@@ -2,9 +2,14 @@ package com.example.notes_app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +24,7 @@ import com.example.notes_app.models.Note;
 import com.example.notes_app.persistence.NoteViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
     private NoteListAdapter adapter;
 
     private NoteViewModel mNoteViewModel;
+
+    private EditText editTextSearch;
+    private TextView emptyTextView;
+    private List<Note> noteList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +53,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        emptyTextView = findViewById(R.id.text_view_no_result);
+        editTextSearch = findViewById(R.id.edit_text_search);
+        editTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        editTextSearch.clearFocus();
+
         initRecyclerView();
         initAdapterGestures();
 
@@ -51,9 +82,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Note> notes) {
                 adapter.submitList(notes);
+                noteList = notes;
+
+                if (notes.isEmpty()) {
+                    emptyTextView.setVisibility(View.VISIBLE);
+                } else {
+                    emptyTextView.setVisibility(View.INVISIBLE);
+                }
             }
         });
+    }
 
+    private void filter(String text) {
+        List<Note> filteredList = new ArrayList<>();
+        for (Note note : noteList) {
+            if (note.getTitle().toLowerCase().contains(text.toLowerCase()) ||
+                    note.getBody().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(note);
+            }
+        }
+        adapter.submitList(filteredList);
     }
 
     private void initRecyclerView() {
@@ -119,5 +167,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        editTextSearch.clearFocus();
     }
 }
